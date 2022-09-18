@@ -43,4 +43,10 @@ def combine_videos():
     # Save the concatenated video
     final_video.write_videofile(str(data_folder_path / output_filename))
 
+    # Delete unnecessary separate videos
+    if parser.get('Output Config', 'delete_separate_clips').lower() in ['true', 'yes', 'y', '1']:
+        for video in os.listdir(str(data_folder_path)):
+            if not video.endswith(output_filename):
+                os.remove(video)
+
     print("Combined Successfully!")
