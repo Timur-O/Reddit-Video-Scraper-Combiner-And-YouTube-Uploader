@@ -16,10 +16,7 @@ def download_all(videos: list):
     parser = configparser.ConfigParser()
     parser.read_file(open(configFilePath, "r"))
 
-    if parser.get('Output Config', 'data_path') != '':
-        data_folder_path = Path(parser.get('Output Config', 'data_path'))
-    else:
-        data_folder_path = Path(__file__).parent.parent / "data"
+    data_folder_path = Path(__file__) / parser.get('Output Config', 'data_path')
 
     downloader = Downloader(max_q=True)
     downloader.path = str(data_folder_path)

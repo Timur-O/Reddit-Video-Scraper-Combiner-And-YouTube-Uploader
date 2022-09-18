@@ -29,5 +29,10 @@ class RedditTools:
         )
 
     def delete_all_saved(self):
-        for saved_submission in self.reddit.user.me().saved(limit=None):
+        print("Starting unsave...")
+
+        for i, saved_submission in enumerate(self.reddit.user.me().saved(limit=None)):
             saved_submission.unsave()
+            print("Unsaved " + str(i) + " Submissions")
+
+        print("Unsaved all successfully!")

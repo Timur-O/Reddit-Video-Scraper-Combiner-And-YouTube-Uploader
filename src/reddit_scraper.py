@@ -85,7 +85,8 @@ class RedditScraper:
             self.video_urls.append(submission.url)
 
             # Save post to mark as "previous"
-            submission.save()
+            if not submission.saved:
+                submission.save()
 
             # Break loop once there are enough videos
             if curr_duration >= final_video_duration_max:
