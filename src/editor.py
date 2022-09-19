@@ -20,7 +20,7 @@ def combine_videos():
     # Get all the videos in the data directory
     for file in os.listdir(str(data_folder_path)):
         # Skip reused data
-        if file.endswith("data-reuse"):
+        if file.endswith("data-reuse") or not file.endswith(".mp4"):
             continue
 
         temp_clip = VideoFileClip(str(data_folder_path / file)).resize(height=1080)
@@ -51,14 +51,3 @@ def combine_videos():
     final_video.write_videofile(str(data_folder_path / output_filename))
 
     print("Combined Successfully!")
-
-    print("Deleting Separate Clips...")
-
-    # Delete unnecessary separate videos
-    if parser.get('Output Config', 'delete_separate_clips').lower() in ['true', 'yes', 'y', '1']:
-        for video in os.listdir(str(data_folder_path)):
-            if not video.endswith(output_filename) and not video.endswith("data-reuse"):
-                os.remove(str(data_folder_path / video))
-
-    print("Deleted Successfully!")
-

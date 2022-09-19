@@ -1,8 +1,6 @@
 import configparser
 from pathlib import Path
 
-from src import title_generator
-from tools.reddit_tools import RedditTools
 from tools.youtube_utils import scrape_titles_from_channels
 
 

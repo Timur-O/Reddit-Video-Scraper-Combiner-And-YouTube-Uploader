@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import praw
 import configparser
 
@@ -11,6 +13,8 @@ class RedditScraper:
         configFilePath = "../config.txt"
         self.parser = configparser.ConfigParser()
         self.parser.read_file(open(configFilePath, "r"))
+
+        self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
 
         # Get Reddit Config Info
         client_id = self.parser.get('Reddit Scraper Config', 'client_id')
@@ -30,6 +34,8 @@ class RedditScraper:
 
         # Initialize Other Variables
         self.video_urls = []
+        self.credits = []
+        self.thumbnails = []
 
         # Inform user of status
         print("Initialized Successfully!")
@@ -42,10 +48,12 @@ class RedditScraper:
         print("Beginning to Scrape...")
 
         # Get Content Config Info
-        subreddits: str = self.parser.get('Content Config', 'list_of_subreddits')\
-                                     .replace('[', '')\
-                                     .replace(',', '+')\
-                                     .replace(']', '')
+        with open(self.data_folder_path / self.parser.get('Content Config', 'subreddits_list_location')) as file:
+            lines = file.readlines()
+            subreddits = ""
+            for line in lines:
+                subreddits += line.rstrip() + "+"
+
         top_time_limit: str = self.parser.get('Content Config', 'top_time_limit')
         max_submission_length: int = int(self.parser.get('Content Config', 'max_submission_duration_seconds'))
         allow_nsfw: bool = self.parser.get('Content Config', 'allow_nsfw').lower() in ['true', 'yes', 'y', '1']
@@ -83,6 +91,8 @@ class RedditScraper:
             # Video Matched Criteria => Add to list
             curr_duration += submission_duration
             self.video_urls.append(submission.url)
+            self.credits.append(submission.author.name)
+            self.thumbnails.append(submission.preview['images'][0]['source']['url'])
 
             # Save post to mark as "previous"
             if not submission.saved:
@@ -103,3 +113,21 @@ class RedditScraper:
         self.video_urls: list, a list of the post URLs to download
         """
         return self.video_urls
+
+    def get_credits(self):
+        """
+        Returns the names of the poster whose posts were downloaded
+        Returns:
+        -----
+        self.credits: list, a list of the names of the user's whose videos were downloaded
+        """
+        return self.credits
+
+    def get_thumbnails(self):
+        """
+        Returns the collected thumbnail URLs
+        Returns:
+        -----
+        self.thumbnails: list, a list of the urls for possible thumbnails
+        """
+        return self.thumbnails

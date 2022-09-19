@@ -1,5 +1,4 @@
 from pathlib import Path
-import csv
 import requests
 from bs4 import BeautifulSoup
 
