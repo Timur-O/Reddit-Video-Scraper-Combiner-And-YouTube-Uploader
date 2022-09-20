@@ -5,7 +5,7 @@ from src import uploader
 
 
 def main():
-    print("Bot has started successfully!")
+    print("Meme Machine has started successfully!")
     print("Initializing scraper...")
 
     scraper = reddit_scraper.RedditScraper()
@@ -26,7 +26,7 @@ def main():
 
     downloader.download_thumbnail(thumbnails)
 
-    print("Beginning to Combine Videos...")
+    print("Beginning to Combine/Modify/Curate Videos...")
 
     # Combine the videos
     editor.combine_videos()
@@ -36,7 +36,7 @@ def main():
     # Upload the videos
     uploader.upload(video_credits)
 
-    print("Bot has completed successfully!")
+    print("Meme Machine has completed successfully!")
 
 
 if __name__ == "__main__":
