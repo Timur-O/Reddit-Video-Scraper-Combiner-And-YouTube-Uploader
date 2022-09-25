@@ -15,7 +15,7 @@ def download_all(videos: list):
     -----
     videos: list, the list of URLs to download
     """
-    configFilePath = "../config.txt"
+    configFilePath = "config.txt"
     parser = configparser.ConfigParser()
     parser.read_file(open(configFilePath, "r"))
 
@@ -43,7 +43,7 @@ def download_thumbnail(thumbnail_urls: list):
     -----
     thumbnail_urls: list, the list of thumbnail URLs for which one random one will be downloaded
     """
-    configFilePath = "../config.txt"
+    configFilePath = "config.txt"
     parser = configparser.ConfigParser()
     parser.read_file(open(configFilePath, "r"))
 

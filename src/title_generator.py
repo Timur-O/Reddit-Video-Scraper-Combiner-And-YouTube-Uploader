@@ -14,7 +14,7 @@ class TitleGenerator:
         self.verbs = ['found', 'discovered', 'tripped over', 'cooked up', 'unearthed', 'acquired', 'manifested',
                       'encountered', 'lost', 'misplaced', 'snorted', 'airdropped', 'collected', 'threw', 'ate',
                       'munched on', 'feasted upon']
-        self.location = ['the basement', 'the closet', 'the pool', 'bed', 'the wardrobe', 'the motel', 'school',
+        self.location = ['the basement', 'the closet', 'the pool', 'bed', 'the wardrobe', 'a motel', 'school',
                          'my dog house']
 
     def generate(self):

@@ -1,7 +1,7 @@
-import reddit_scraper
-import downloader
-import editor
-from src import uploader
+import src.reddit_scraper as reddit_scraper
+import src.downloader as downloader
+import src.editor as editor
+import src.uploader as uploader
 
 
 def main():

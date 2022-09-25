@@ -6,7 +6,7 @@ from moviepy.editor import *
 
 
 def combine_videos():
-    configFilePath = "../config.txt"
+    configFilePath = "config.txt"
     parser = configparser.ConfigParser()
     parser.read_file(open(configFilePath, "r"))
 

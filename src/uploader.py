@@ -11,7 +11,7 @@ import configparser
 class YouTubeUploader:
     def __init__(self, video_credits: list):
         # Setup Config
-        configFilePath = "../config.txt"
+        configFilePath = "config.txt"
         self.parser = configparser.ConfigParser()
         self.parser.read_file(open(configFilePath, "r"))
 

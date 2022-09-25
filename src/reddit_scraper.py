@@ -10,7 +10,7 @@ class RedditScraper:
             Initializes the reddit object.
         """
         # Setup Config
-        configFilePath = "../config.txt"
+        configFilePath = "config.txt"
         self.parser = configparser.ConfigParser()
         self.parser.read_file(open(configFilePath, "r"))
 
