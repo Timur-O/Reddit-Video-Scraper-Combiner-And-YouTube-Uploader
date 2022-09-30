@@ -1,3 +1,6 @@
+"""
+This file contains everything pertaining to uploading the content to YouTube.
+"""
 import os
 from pathlib import Path
 
@@ -8,10 +11,12 @@ from src.title_generator import TitleGenerator
 
 
 class YouTubeUploader:
+    """
+    This class contains all the data and methods for uploading to YouTube.
+    """
     def __init__(self, parser, video_credits: list):
         # Setup Config
         self.parser = parser
-
         self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
         self.output_filename = self.parser.get('Output Config', 'output_filename')
 
@@ -28,22 +33,24 @@ class YouTubeUploader:
         self.video = LocalVideo(file_path=str(self.data_folder_path / self.output_filename))
 
         # Generate and set a title
-        title_generator = TitleGenerator()
-        self.title = title_generator.generate()
-        self.video.set_title(self.title)
+        title_generator = TitleGenerator(parser)
+        title = title_generator.generate()
+        self.video.set_title(title)
 
         # Append credits to description and set description
-        with open(self.data_folder_path / self.parser.get('YouTube Metadata Config', 'description_location')) as file:
-            self.description = file.read()
+        with open(self.data_folder_path / self.parser.get('YouTube Metadata Config', 'description_location'),
+                  encoding="utf8") as file:
+            description = file.read()
             for credit in video_credits:
-                self.description += "\n- " + credit
-        self.video.set_description(self.description)
+                description += "\n- " + credit
+        self.video.set_description(description)
 
         # Set the tags
-        with open(self.data_folder_path / self.parser.get('YouTube Metadata Config', 'tags_location')) as file:
+        with open(self.data_folder_path / self.parser.get('YouTube Metadata Config', 'tags_location'),
+                  encoding="utf8") as file:
             lines = file.readlines()
-            self.tags = [line.rstrip() for line in lines]
-        self.video.set_tags(self.tags)
+            tags = [line.rstrip() for line in lines]
+        self.video.set_tags(tags)
 
         # Set embeddability, public stats, and privacy status
         self.video.set_embeddable(True)
@@ -70,6 +77,9 @@ class YouTubeUploader:
         return youtube_video.id
 
     def clean_up(self):
+        """
+        Cleans up the downloaded clips and thumbnails
+        """
         print("Deleting Clips...")
 
         # Delete unnecessary separate videos if set

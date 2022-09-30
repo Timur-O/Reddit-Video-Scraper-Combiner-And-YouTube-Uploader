@@ -1,8 +1,15 @@
+"""
+This file manages the scraping of content from Reddit.
+"""
 from pathlib import Path
+
 import praw
 
 
 class RedditScraper:
+    """
+    This class scrapes content from Reddit.
+    """
     def __init__(self, parser):
         """
             Initializes the reddit object.
@@ -47,7 +54,8 @@ class RedditScraper:
         print("Beginning to Scrape...")
 
         # Get Content Config Info
-        with open(self.data_folder_path / self.parser.get('Content Config', 'subreddits_list_location')) as file:
+        with open(self.data_folder_path / self.parser.get('Content Config', 'subreddits_list_location'),
+                  encoding="utf8") as file:
             lines = file.readlines()
             subreddits = ""
             for line in lines:
@@ -78,7 +86,7 @@ class RedditScraper:
             # The try-except ensures that only reddit hosted videos are included, not ones on other platforms
             try:
                 submission_duration = int(submission.secure_media['reddit_video']['duration'])
-            except Exception:
+            except TypeError:
                 print("Skipping Non-Video / Non-Reddit Video...")
                 continue
 

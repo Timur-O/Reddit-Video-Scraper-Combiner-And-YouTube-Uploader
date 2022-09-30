@@ -1,13 +1,19 @@
-import shutil
+"""
+This file manages the downloading of content.
+"""
 import random
-import requests
-
-from redvid import Downloader
+import shutil
 from pathlib import Path
+
+import requests
 from PIL import Image, ImageEnhance
+from redvid import Downloader
 
 
 class ContentDownloader:
+    """
+    This class downloads all the content used in the rest of the application.
+    """
     def __init__(self, parser):
         """
             Initializes the content downloader object.
@@ -51,7 +57,7 @@ class ContentDownloader:
         thumbnail_file = data_folder_path / self.parser.get('Output Config', 'output_thumbnail')
 
         # Download Image
-        img_data = requests.get(thumbnail_urls[int(random.uniform(0, 1) * len(thumbnail_urls))]).content
+        img_data = requests.get(thumbnail_urls[int(random.uniform(0, 1) * len(thumbnail_urls))], timeout=180).content
         with open(str(thumbnail_file) + '.webp', "wb") as handler:
             handler.write(img_data)
 

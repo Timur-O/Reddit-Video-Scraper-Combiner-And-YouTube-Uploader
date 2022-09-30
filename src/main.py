@@ -1,16 +1,25 @@
-import src.reddit_scraper as reddit_scraper
-import src.downloader as downloader
-import src.editor as editor
-import src.uploader as uploader
+"""
+This file combines all the parts of the code and runs them to form the application.
+"""
 import configparser
+
+from src import downloader
+from src import editor
+from src import reddit_scraper
+from src import uploader
 
 
 def main():
+    """
+    The main function, which calls all the other necessary functions for the application.
+    :return:
+    """
     print("Meme Machine has started successfully!")
 
-    configFilePath = "config.txt"
+    config_file_path = "config.txt"
     parser = configparser.ConfigParser()
-    parser.read_file(open(configFilePath, "r"))
+    with open(config_file_path, "r", encoding="utf8") as file:
+        parser.read_file(file)
 
     print("Initializing scraper...")
 

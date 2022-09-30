@@ -1,16 +1,19 @@
+"""
+File containing all the helpful tools for working with Reddit.
+"""
 import praw
-import configparser
 
 
 class RedditTools:
-    def __init__(self):
+    """
+    The class containing all the helpful Reddit tools.
+    """
+    def __init__(self, parser):
         """
             Initializes the reddit object.
         """
         # Setup Config
-        configFilePath = "../config.txt"
-        self.parser = configparser.ConfigParser()
-        self.parser.read_file(open(configFilePath, "r"))
+        self.parser = parser
 
         # Get Reddit Config Info
         client_id = self.parser.get('Reddit Scraper Config', 'client_id')
@@ -29,6 +32,9 @@ class RedditTools:
         )
 
     def delete_all_saved(self):
+        """
+        This method deletes all the saved posts in a Reddit account.
+        """
         print("Starting unsave...")
 
         for i, saved_submission in enumerate(self.reddit.user.me().saved(limit=None)):

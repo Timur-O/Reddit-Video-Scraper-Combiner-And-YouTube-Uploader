@@ -1,4 +1,8 @@
+"""
+This file contains all the helpful utilities which interact with YouTube.
+"""
 from pathlib import Path
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -19,16 +23,16 @@ def scrape_youtube_titles(channel_id: str, save_location: Path):
     print("Beginning to Scrape Titles...")
 
     url = "https://www.youtube.com/feeds/videos.xml?channel_id=" + channel_id
-    html = requests.get(url)
+    html = requests.get(url, timeout=180)
     soup = BeautifulSoup(html.text, "lxml")
     for entry in soup.findAll("entry"):
         titles.append(entry.findNext("title").text)
 
-    with open(save_location, 'a') as fd:
+    with open(save_location, 'a', encoding="utf8") as save_file:
         for title in titles:
             try:
-                fd.write(title + "\n")
-            except Exception:
+                save_file.write(title + "\n")
+            except IOError:
                 continue
 
     print("Scraped Titles Successfully!")
