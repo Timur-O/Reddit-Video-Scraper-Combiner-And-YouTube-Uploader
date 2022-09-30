@@ -1,6 +1,7 @@
 """
 This file manages the scraping of content from Reddit.
 """
+from datetime import datetime
 from pathlib import Path
 
 import praw
@@ -46,6 +47,32 @@ class RedditScraper:
         # Inform user of status
         print("Initialized Successfully!")
 
+    def select_subreddits(self):
+        """
+        Selects the subreddits depending on the day
+        Returns:
+        -----
+        subreddits: str, the list of concatenated subreddits for the day
+        """
+        # Get Content Config Info
+        with open(self.data_folder_path / self.parser.get('Content Config', 'subreddits_list_location'),
+                  encoding="utf8") as file:
+            lines = file.readlines()
+
+            # Get all the different "genres" of subreddits
+            genre_counter = -1
+            subreddit_genres = []
+            for line in lines:
+                if line.startswith("-----"):
+                    genre_counter += 1
+                    subreddit_genres.append("")
+                    continue
+                subreddit_genres[genre_counter] += line.rstrip() + "+"
+
+            # Select a "genre" based on day
+            today = datetime.today().weekday()
+            return subreddit_genres[today]
+
     def scrape_posts(self):
         """
         Scrapes the posts from the subreddit and adds them to the list of posts
@@ -53,13 +80,7 @@ class RedditScraper:
         # Inform user of status
         print("Beginning to Scrape...")
 
-        # Get Content Config Info
-        with open(self.data_folder_path / self.parser.get('Content Config', 'subreddits_list_location'),
-                  encoding="utf8") as file:
-            lines = file.readlines()
-            subreddits = ""
-            for line in lines:
-                subreddits += line.rstrip() + "+"
+        subreddits = self.select_subreddits()
 
         top_time_limit: str = self.parser.get('Content Config', 'top_time_limit')
         max_submission_length: int = int(self.parser.get('Content Config', 'max_submission_duration_seconds'))
