@@ -1,27 +1,47 @@
 import random
+import configparser
+from pathlib import Path
 
 
 class TitleGenerator:
     def __init__(self):
-        self.adjective = ['crispy', 'spicy', 'cursed', 'dank', 'flavorful', 'salty', 'hot', 'juicy', 'funny', 'haha',
-                          'surprising', 'corny', 'cracked', 'feisty', 'unusual', 'fried', 'delicious', 'succulent',
-                          'curried', 'exceptional', 'marvelous', 'satisfying', 'valuable', 'deluxe', 'tiptop',
-                          'stupendous', 'precious', 'sizzling', 'musty', 'sticky', 'moist', 'well seasoned', 'seasoned',
-                          'frosty', 'suspicious', 'saucy']
-        self.video_words = ['videos', 'tiktoks', 'vines', 'memes', 'tik toks']
-        self.person = ['i', 'I', 'my wife\'s boyfriend', 'my dog', 'my cat', 'my crocodile', 'my boyfriend',
-                       'my girlfriend', 'my son', 'my dog\'s uncle', 'my iguana', 'my frog', 'my friend']
-        self.verbs = ['found', 'discovered', 'tripped over', 'cooked up', 'unearthed', 'acquired', 'manifested',
-                      'encountered', 'lost', 'misplaced', 'snorted', 'airdropped', 'collected', 'threw', 'ate',
-                      'munched on', 'feasted upon']
-        self.location = ['the basement', 'the closet', 'the pool', 'bed', 'the wardrobe', 'a motel', 'school',
-                         'my dog house']
+        # Setup Config
+        configFilePath = "config.txt"
+        self.parser = configparser.ConfigParser()
+        self.parser.read_file(open(configFilePath, "r"))
+
+        self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
+
+        with open(self.data_folder_path / self.parser.get('Title Generation Config', 'adjectives_path')) as file:
+            lines = file.readlines()
+            self.adjectives = [line.rstrip() for line in lines]
+            file.close()
+
+        with open(self.data_folder_path / self.parser.get('Title Generation Config', 'video_words_path')) as file:
+            lines = file.readlines()
+            self.video_words = [line.rstrip() for line in lines]
+            file.close()
+
+        with open(self.data_folder_path / self.parser.get('Title Generation Config', 'people_path')) as file:
+            lines = file.readlines()
+            self.people = [line.rstrip() for line in lines]
+            file.close()
+
+        with open(self.data_folder_path / self.parser.get('Title Generation Config', 'verbs_path')) as file:
+            lines = file.readlines()
+            self.verbs = [line.rstrip() for line in lines]
+            file.close()
+
+        with open(self.data_folder_path / self.parser.get('Title Generation Config', 'locations_path')) as file:
+            lines = file.readlines()
+            self.locations = [line.rstrip() for line in lines]
+            file.close()
 
     def generate(self):
         title = ""
-        title += self.adjective[int(random.uniform(0, 1) * len(self.adjective))] + " "
+        title += self.adjectives[int(random.uniform(0, 1) * len(self.adjectives))] + " "
         title += self.video_words[int(random.uniform(0, 1) * len(self.video_words))] + " "
-        title += self.person[int(random.uniform(0, 1) * len(self.person))] + " "
+        title += self.people[int(random.uniform(0, 1) * len(self.people))] + " "
         title += self.verbs[int(random.uniform(0, 1) * len(self.verbs))] + " in "
-        title += self.location[int(random.uniform(0, 1) * len(self.location))] + " "
+        title += self.locations[int(random.uniform(0, 1) * len(self.locations))] + " "
         return title

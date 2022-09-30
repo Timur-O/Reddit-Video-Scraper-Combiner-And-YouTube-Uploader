@@ -5,15 +5,12 @@ from simple_youtube_api.Channel import Channel
 from simple_youtube_api.LocalVideo import LocalVideo
 
 from src.title_generator import TitleGenerator
-import configparser
 
 
 class YouTubeUploader:
-    def __init__(self, video_credits: list):
+    def __init__(self, parser, video_credits: list):
         # Setup Config
-        configFilePath = "config.txt"
-        self.parser = configparser.ConfigParser()
-        self.parser.read_file(open(configFilePath, "r"))
+        self.parser = parser
 
         self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
         self.output_filename = self.parser.get('Output Config', 'output_filename')
@@ -48,7 +45,7 @@ class YouTubeUploader:
             self.tags = [line.rstrip() for line in lines]
         self.video.set_tags(self.tags)
 
-        # Set embedability, public stats, and privacy status
+        # Set embeddability, public stats, and privacy status
         self.video.set_embeddable(True)
         self.video.set_public_stats_viewable(True)
         self.video.set_privacy_status(self.parser.get('YouTube Metadata Config', 'privacy'))
@@ -86,24 +83,3 @@ class YouTubeUploader:
             os.remove(str(self.data_folder_path / self.output_filename))
 
         print("Deleted Successfully!")
-
-
-def upload(video_credits: list):
-    """
-    Upload the video
-    Params:
-    -----
-    credits: list, the credits for the videos to be appended to the description
-    Returns:
-    -----
-    youtube_video.id: str, the id of the uploaded YouTube video
-    """
-    uploader = YouTubeUploader(video_credits)
-    video_id = uploader.upload()
-
-    print("Video Id: " + video_id)
-    print("Successfully Uploaded Video!")
-
-    uploader.clean_up()
-
-    return video_id

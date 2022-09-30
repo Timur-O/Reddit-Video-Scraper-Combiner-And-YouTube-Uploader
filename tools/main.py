@@ -5,7 +5,7 @@ from tools.youtube_utils import scrape_titles_from_channels
 
 
 def main():
-    # Delete All Saved => ie. all history for bot
+    # Delete All Saved => i.e. all history for bot
     # reddit_tools = RedditTools()
     # reddit_tools.delete_all_saved()
 

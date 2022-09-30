@@ -133,3 +133,6 @@ data/
 
 # Ignore IntelliJ files
 .idea/
+
+# Ignore Config File
+config.txt

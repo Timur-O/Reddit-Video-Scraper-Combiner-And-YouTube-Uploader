@@ -1,18 +1,17 @@
 from pathlib import Path
-
 import praw
-import configparser
 
 
 class RedditScraper:
-    def __init__(self):
+    def __init__(self, parser):
         """
             Initializes the reddit object.
+            Params:
+            -----
+            parser: Config Parser Instance
         """
         # Setup Config
-        configFilePath = "config.txt"
-        self.parser = configparser.ConfigParser()
-        self.parser.read_file(open(configFilePath, "r"))
+        self.parser = parser
 
         self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
 
