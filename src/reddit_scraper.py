@@ -107,7 +107,7 @@ class RedditScraper:
             # The try-except ensures that only reddit hosted videos are included, not ones on other platforms
             try:
                 submission_duration = int(submission.secure_media['reddit_video']['duration'])
-            except TypeError:
+            except (TypeError, KeyError):
                 print("Skipping Non-Video / Non-Reddit Video...")
                 continue
 
