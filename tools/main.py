@@ -16,10 +16,10 @@ def main():
     # Setup ArgParse
     arg_parser = argparse.ArgumentParser("tools.src")
     arg_parser.add_argument("unsave_tool", metavar="--unsave", default=False,
-                        help="Indicates all saved posts should be deleted for the Reddit account in the config file.",
+                            help="Indicates all saved posts will be deleted for the Reddit account in the config file.",
                             type=bool)
     arg_parser.add_argument("scrape_tool", metavar="--scrape", default=False,
-                        help="Indicates titles should be scraped from the channels provided in the config file.",
+                            help="Indicates titles should be scraped from the channels provided in the config file.",
                             type=bool)
     args = arg_parser.parse_args()
 

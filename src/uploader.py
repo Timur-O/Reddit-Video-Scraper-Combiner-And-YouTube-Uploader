@@ -4,8 +4,8 @@ This file contains everything pertaining to uploading the content to YouTube.
 import os
 from pathlib import Path
 
-from simple_youtube_api.Channel import Channel
-from simple_youtube_api.LocalVideo import LocalVideo
+from simple_youtube_api.channel import Channel
+from simple_youtube_api.local_video import LocalVideo
 
 from src.title_generator import TitleGenerator
 
@@ -23,8 +23,10 @@ class YouTubeUploader:
         client_secret_location = self.data_folder_path / self.parser.get('YouTube Config', 'client_secret_location')
         credentials_storage_location = self.data_folder_path / self.parser.get('YouTube Config', 'login_storage_path')
         scope_urls = self.parser.get('YouTube Config', 'scope_urls').split(',')
+        show_login_button = self.parser.get('YouTube Config', 'show_login_button').lower() in ['true', 'yes', 'y', '1']
+        login_button_url = self.parser.get('YouTube Config', 'login_button_location')
 
-        self.channel = Channel()
+        self.channel = Channel(show_login_button, self.data_folder_path / login_button_url)
         self.channel.login(str(client_secret_location),
                            str(credentials_storage_location),
                            scope_urls)
