@@ -1,41 +1,43 @@
 [Reddit Scraper Config]
-client_id =
-client_secret =
-reddit_username =
-reddit_password =
-user_agent =
+client_id = [From Reddit]
+client_secret = [From Reddit]
+reddit_username = [From Reddit]
+reddit_password = [From Reddit]
+user_agent = [os:app:version (by u/RedditUsername)]
 
 [Content Config]
-subreddits_list_location =
-top_time_limit =
-max_submission_duration_seconds =
-allow_nsfw =
-allow_previous =
-final_video_soft_max_duration =
-append_clip =
-append_clip_location_relative_to_data_path =
+subreddits_list_location = [TXT File Path Relative to data_path]
+top_time_limit = [day, week, month, year, all]
+max_submission_duration_seconds = [Integer Denoting Seconds]
+allow_nsfw = [Boolean]
+allow_previous = [Boolean]
+final_video_soft_max_duration = [Integer Denoting Seconds, May Be Exceeded by max_submission_duration_seconds]
+append_clip = [Boolean]
+append_clip_location_relative_to_data_path = [MP4 File Path Relative to data_path]
 
 [Output Config]
-data_path =
-output_filename =
-output_thumbnail =
-delete_separate_clips =
-delete_combined_video =
+data_path = [Path to Directory]
+output_filename = [MP4 File Path Relative to data_path]
+output_thumbnail = [JPEG File Path Relative to data_path]
+delete_separate_clips = [Boolean]
+delete_combined_video = [Boolean]
 
 [Title Generation Config]
-formats_path =
-adjectives_path =
-video_words_path =
-people_path =
-verbs_path =
-locations_path =
+formats_path = [TXT File Path Relative to data_path]
+adjectives_path = [TXT File Path Relative to data_path]
+video_words_path = [TXT File Path Relative to data_path]
+people_path = [TXT File Path Relative to data_path]
+verbs_path = [TXT File Path Relative to data_path]
+locations_path = [TXT File Path Relative to data_path]
 
 [YouTube Config]
-client_secret_location =
-login_storage_path =
-scope_urls =
+client_secret_location = [From YouTube, Path Relative to data_path]
+login_storage_path = [From YouTube, Path Relative to data_path]
+scope_urls = https://www.googleapis.com/auth/youtube.upload
+show_login_button = [Boolean]
+login_button_location = [PNG File Path Relative to data_path]
 
 [YouTube Metadata Config]
-description_location =
-tags_location =
-privacy =
+description_location = [TXT File Path Relative to data_path]
+tags_location = [TXT File Path Relative to data_path]
+privacy = [private, unlisted, public]
