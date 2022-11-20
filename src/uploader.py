@@ -2,7 +2,6 @@
 This file contains everything pertaining to uploading the content to YouTube.
 """
 import os
-from pathlib import Path
 
 from simple_youtube_api.channel import Channel
 from simple_youtube_api.local_video import LocalVideo
@@ -14,10 +13,10 @@ class YouTubeUploader:
     """
     This class contains all the data and methods for uploading to YouTube.
     """
-    def __init__(self, parser, video_credits: list):
+    def __init__(self, parser, dfp, video_credits: list):
         # Setup Config
         self.parser = parser
-        self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
+        self.data_folder_path = dfp
         self.output_filename = self.parser.get('Output Config', 'output_filename')
 
         client_secret_location = self.data_folder_path / self.parser.get('YouTube Config', 'client_secret_location')
@@ -35,7 +34,7 @@ class YouTubeUploader:
         self.video = LocalVideo(file_path=str(self.data_folder_path / self.output_filename))
 
         # Generate and set a title
-        title_generator = TitleGenerator(parser)
+        title_generator = TitleGenerator(parser, self.data_folder_path)
         title = title_generator.generate()
         self.video.set_title(title)
 

@@ -2,17 +2,17 @@
 This file manages the generation of the titles.
 """
 import random
-from pathlib import Path
 
 
 class TitleGenerator:
     """
     This class generates the titles.
     """
-    def __init__(self, parser):
+
+    def __init__(self, parser, dfp):
         # Setup Config
         self.parser = parser
-        self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
+        self.data_folder_path = dfp
 
         self.replacement_dict = {}
 

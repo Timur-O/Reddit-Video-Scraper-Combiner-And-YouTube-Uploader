@@ -2,6 +2,7 @@
 This file combines all the parts of the code and runs them to form the application.
 """
 import configparser
+from pathlib import Path
 
 from src import downloader
 from src import editor
@@ -21,9 +22,11 @@ def main():
     with open(config_file_path, "r", encoding="utf8") as file:
         parser.read_file(file)
 
+    data_folder_path = Path.cwd() / parser.get('Output Config', 'data_path')
+
     print("Initializing scraper...")
 
-    mm_scraper = reddit_scraper.RedditScraper(parser)
+    mm_scraper = reddit_scraper.RedditScraper(parser, data_folder_path)
     # Scape the necessary posts
     mm_scraper.scrape_posts()
 
@@ -35,7 +38,7 @@ def main():
     thumbnails = mm_scraper.get_thumbnails()
 
     # Download the videos to the data folder
-    mm_downloader = downloader.ContentDownloader(parser)
+    mm_downloader = downloader.ContentDownloader(parser, data_folder_path)
     mm_downloader.download_all(download_urls)
 
     print("Beginning to Create Thumbnail")
@@ -45,13 +48,13 @@ def main():
     print("Beginning to Combine/Modify/Curate Videos...")
 
     # Combine the videos
-    mm_editor = editor.Editor(parser)
+    mm_editor = editor.Editor(parser, data_folder_path)
     mm_editor.combine_videos()
 
     print("Beginning to Upload the Video...")
 
     # Upload the videos
-    mm_uploader = uploader.YouTubeUploader(parser, video_credits)
+    mm_uploader = uploader.YouTubeUploader(parser, data_folder_path, video_credits)
     mm_uploader.upload()
 
     # Clean up after uploading

@@ -3,7 +3,6 @@ This file manages the downloading of content.
 """
 import random
 import shutil
-from pathlib import Path
 
 import requests
 from PIL import Image, ImageEnhance
@@ -14,7 +13,7 @@ class ContentDownloader:
     """
     This class downloads all the content used in the rest of the application.
     """
-    def __init__(self, parser):
+    def __init__(self, parser, dfp):
         """
             Initializes the content downloader object.
             Params:
@@ -22,6 +21,7 @@ class ContentDownloader:
             parser: Config Parser Instance
         """
         self.parser = parser
+        self.data_folder_path = dfp
 
     def download_all(self, videos: list):
         """
@@ -30,10 +30,8 @@ class ContentDownloader:
         -----
         videos: list, the list of URLs to download
         """
-        data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
-
         downloader = Downloader(max_q=True)
-        downloader.path = str(data_folder_path)
+        downloader.path = str(self.data_folder_path)
 
         # Download all videos
         for i, video in enumerate(videos):
@@ -42,7 +40,7 @@ class ContentDownloader:
             print("Downloaded Video #" + str(i + 1))
 
         # Remove Temporary Folder
-        shutil.rmtree(str(data_folder_path / "redvid_temp"))
+        shutil.rmtree(str(self.data_folder_path / "redvid_temp"))
 
         print("Downloaded Successfully!")
 
@@ -53,8 +51,7 @@ class ContentDownloader:
         -----
         thumbnail_urls: list, the list of thumbnail URLs for which one random one will be downloaded
         """
-        data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
-        thumbnail_file = data_folder_path / self.parser.get('Output Config', 'output_thumbnail')
+        thumbnail_file = self.data_folder_path / self.parser.get('Output Config', 'output_thumbnail')
 
         # Download Image
         img_data = requests.get(thumbnail_urls[int(random.uniform(0, 1) * len(thumbnail_urls))], timeout=180).content

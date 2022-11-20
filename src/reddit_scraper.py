@@ -2,7 +2,6 @@
 This file manages the scraping of content from Reddit.
 """
 from datetime import datetime
-from pathlib import Path
 
 import praw
 
@@ -11,7 +10,7 @@ class RedditScraper:
     """
     This class scrapes content from Reddit.
     """
-    def __init__(self, parser):
+    def __init__(self, parser, dfp):
         """
             Initializes the reddit object.
             Params:
@@ -21,7 +20,7 @@ class RedditScraper:
         # Setup Config
         self.parser = parser
 
-        self.data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
+        self.data_folder_path = dfp
 
         # Get Reddit Config Info
         client_id = self.parser.get('Reddit Scraper Config', 'client_id')
@@ -119,7 +118,8 @@ class RedditScraper:
             # Video Matched Criteria => Add to list
             curr_duration += submission_duration
             self.video_urls.append(submission.url)
-            self.credits.append(submission.author.name)
+            if (submission.author != None):
+                self.credits.append(submission.author.name)
             self.thumbnails.append(submission.preview['images'][0]['source']['url'])
 
             # Save post to mark as "previous"

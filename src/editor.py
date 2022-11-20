@@ -2,7 +2,6 @@
 This files manages the editing of the content into one clip.
 """
 import os
-from pathlib import Path
 
 import numpy as np
 from moviepy.editor import VideoFileClip, concatenate_videoclips
@@ -13,7 +12,7 @@ class Editor:
     This class edits the content.
     """
 
-    def __init__(self, parser):
+    def __init__(self, parser, dfp):
         """
             Initializes the editor object.
             Params:
@@ -21,13 +20,12 @@ class Editor:
             parser: Config Parser Instance
         """
         self.parser = parser
+        self.data_folder_path = dfp
 
     def combine_videos(self):
         """
         Combines all the videos in the data folder that end in .mp4
         """
-        data_folder_path = Path(__file__) / self.parser.get('Output Config', 'data_path')
-
         # Define variables and helper functions
         videos = []
 
@@ -56,12 +54,12 @@ class Editor:
             return np.sqrt(((1.0 * array) ** 2).mean())
 
         # Get all the videos in the data directory
-        for file in os.listdir(str(data_folder_path)):
+        for file in os.listdir(str(self.data_folder_path)):
             # Skip reused data
             if file.endswith("data-reuse") or not file.endswith(".mp4"):
                 continue
 
-            temp_clip = VideoFileClip(str(data_folder_path / file)).resize(height=1080)
+            temp_clip = VideoFileClip(str(self.data_folder_path / file)).resize(height=1080)
 
             volumes = [volume(cut_audio_clip(i)) for i in range(0, int(temp_clip.audio.duration))]
             max_volume = np.max(volumes)
@@ -76,7 +74,7 @@ class Editor:
         # Concatenate ending clip to video
         if self.parser.get('Content Config', 'append_clip').lower() in ['true', 'yes', 'y', '1']:
             videos.append(
-                VideoFileClip(str(data_folder_path / self.parser.get('Content Config',
+                VideoFileClip(str(self.data_folder_path / self.parser.get('Content Config',
                                                                      'append_clip_location_relative_to_data_path')
                                   )).resize(height=1080)
             )
@@ -88,6 +86,6 @@ class Editor:
         output_filename = self.parser.get('Output Config', 'output_filename')
 
         # Save the concatenated video
-        final_video.write_videofile(str(data_folder_path / output_filename))
+        final_video.write_videofile(str(self.data_folder_path / output_filename))
 
         print("Combined Successfully!")
